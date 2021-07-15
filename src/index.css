@@ -20,6 +20,10 @@ body {
   height: 20rem;
 }
 
+.addWidth {
+  width: 40rem;
+}
+
 .graycolor {
   color: rgb(228, 228, 231);
 }
