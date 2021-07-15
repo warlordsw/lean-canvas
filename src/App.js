@@ -150,7 +150,7 @@ const App = () => {
       <div className='flex justify-center'>
         <form
           onSubmit={handleProblem}
-          className=' flex flex-col w-full addHeight'
+          className=' flex flex-col w-64 addHeight'
         >
           <div className='text-xl p-3 mx-2 bg-base-200 text-center'>
             PROBLEM
@@ -174,7 +174,7 @@ const App = () => {
           </div>
           <div className='text-xl p-3 mx-2 mb-2 h-12 bg-base-200 text-center'></div>
         </form>
-        <div className='flex flex-col w-full'>
+        <div className='flex flex-col w-64'>
           <form
             onSubmit={handleSolution}
             className='flex flex-col addHeightTwo'
@@ -234,7 +234,7 @@ const App = () => {
         </div>
         <form
           onSubmit={handleUniqueValue}
-          className='flex flex-col w-full addHeight'
+          className='flex flex-col w-64 addHeight'
         >
           <div className='text-xl p-3 mx-2 bg-base-200 text-center'>
             UNIQUE VALUE PROPOSITION
@@ -260,7 +260,7 @@ const App = () => {
           </div>
           <div className='text-xl p-3 mx-2 mb-2 h-12 bg-base-200 text-center'></div>
         </form>
-        <div className='flex flex-col w-full '>
+        <div className='flex flex-col w-64 '>
           <form onSubmit={handleUnfair} className='flex flex-col addHeightTwo'>
             <div className='text-xl p-3 mx-2 bg-base-200 text-center'>
               UNFAIR ADVANTAGE
@@ -315,7 +315,7 @@ const App = () => {
         </div>
         <form
           onSubmit={handleCustomerSeg}
-          className='flex flex-col w-full addHeight'
+          className='flex flex-col w-64 addHeight'
         >
           <div className='text-xl p-3 mx-2 bg-base-200 text-center'>
             CUSTOMER SEGMENTS
@@ -344,7 +344,10 @@ const App = () => {
       </div>
       {/* Alt Sekme Geçiş */}
       <div className='flex justify-center'>
-        <form onSubmit={handleCostStr} className=' flex flex-col w-full h-60 '>
+        <form
+          onSubmit={handleCostStr}
+          className=' flex flex-col addWidth h-60 '
+        >
           <div className='text-xl p-3 mx-2 bg-base-200 text-center'>
             COST STRUCTURE
           </div>
@@ -367,7 +370,7 @@ const App = () => {
           </div>
           <div className='text-xl p-3 mx-2 mb-2 h-12 bg-base-200 text-center'></div>
         </form>
-        <form onSubmit={handleRevenue} className='flex flex-col w-full h-60'>
+        <form onSubmit={handleRevenue} className='flex flex-col addWidth  h-60'>
           <div className='text-xl p-3 mx-2 bg-base-200 text-center'>
             REVENUE STREAMS
           </div>
