@@ -7,9 +7,22 @@ body {
   height: 100vh;
   max-width: 2560px;
   margin: auto;
-  padding: 1rem;
+  padding-left: 10rem;
+  padding-right: 10rem;
+  padding-top: 3rem;
 }
 
+.addHeight {
+  height: 40rem;
+}
+
+.addHeightTwo {
+  height: 20rem;
+}
+
+.graycolor {
+  color: rgb(228, 228, 231);
+}
 /* ::-webkit-scrollbar {
   width: 12px;
   height: 12px;
