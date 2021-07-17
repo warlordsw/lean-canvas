@@ -1,20 +1,42 @@
-import React, { useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
+import { useCanvasState } from './context/context'
+import FirebaseContext from './context/firebase'
 
 const initialState = {
-  problem: '',
-  solution: '',
-  key_metrics: '',
-  unique_value: '',
-  unfair: '',
-  channels: '',
-  customer_seg: '',
-  cost_str: '',
-  revenue: '',
+  problem: [],
+  solution: [],
+  key_metrics: [],
+  unique_value: [],
+  unfair: [],
+  channels: [],
+  customer_seg: [],
+  cost_str: [],
+  revenue: [],
 }
 
-const App = () => {
+const canvasNames = [
+  'problem',
+  'solution',
+  'key_metrics',
+  'unique_value',
+  'unfair',
+  'channels',
+  'customer_seg',
+  'cost_str',
+  'revenue',
+]
+
+let result = ''
+
+const App = (props) => {
+  const { newDataId } = useCanvasState()
   // const [list, setList] = useState(initialState)
   // console.log(list.problem)
+  //console.log(newDataId, 'newDataIdApp')
+  let linkId = props.location.pathname.substring(1)
+  const canvasData = useContext(FirebaseContext)
+
+  const [baseCanvas, setBaseCanvas] = useState(initialState)
   const [data, setData] = useState(initialState)
   const [problem, setProblem] = useState([])
   const [solution, setSolution] = useState([])
@@ -25,123 +47,258 @@ const App = () => {
   const [customer_seg, setCustomer_seg] = useState([])
   const [cost_str, setCost_str] = useState([])
   const [revenue, setRevenue] = useState([])
+  // const updateDatabase = async (firebase) => {
+  //   if (newDataId) {
+  //     await firebase.firestore().collection('Canvas').doc(newDataId).set({
+  //       problem: problem,
+  //       solution: solution,
+  //       key_metrics: key_metrics,
+  //       unique_value: unique_value,
+  //       unfair: unfair,
+  //       channels: channels,
+  //       customer_seg: customer_seg,
+  //       cost_str: cost_str,
+  //       revenue: revenue,
+  //     })
+  //   }
 
-  //console.log(data.problem)
-  console.log(solution)
-  const handleProblem = (e) => {
+  //   await firebase.firestore().collection('Canvas').doc(linkId).set({
+  //     problem: problem,
+  //     solution: solution,
+  //     key_metrics: key_metrics,
+  //     unique_value: unique_value,
+  //     unfair: unfair,
+  //     channels: channels,
+  //     customer_seg: customer_seg,
+  //     cost_str: cost_str,
+  //     revenue: revenue,
+  //   })
+  // }
+
+  const updateDatabase = async (varA, varB, newProblem) => {
+    if (newDataId) {
+      await canvasData.firebase
+        .firestore()
+        .collection('Canvas')
+        .doc(newDataId)
+        .set({ ...baseCanvas, [varA]: [...varB, newProblem] })
+      setBaseCanvas({ ...baseCanvas, [varA]: [...varB, newProblem] })
+    }
+    await canvasData.firebase
+      .firestore()
+      .collection('Canvas')
+      .doc(linkId)
+      .set({ ...baseCanvas, [varA]: [...varB, newProblem] })
+    setBaseCanvas({ ...baseCanvas, [varA]: [...varB, newProblem] })
+  }
+
+  useEffect(() => {
+    const getCanvasList = async (firebase) => {
+      const snapshot = await firebase
+        .firestore()
+        .collection('Canvas')
+        .doc(linkId)
+        .get()
+      result = snapshot.data()
+      if (
+        result.problem ||
+        result.solution ||
+        result.key_metrics ||
+        result.unique_value ||
+        result.unfair ||
+        result.channels ||
+        result.customer_seg ||
+        result.cost_str ||
+        result.revenue
+      ) {
+        setProblem(result.problem)
+        setSolution(result.solution)
+        setKey_metrics(result.key_metrics)
+        setUnique_value(result.unique_value)
+        setUnfair(result.unfair)
+        setChannels(result.channels)
+        setCustomer_seg(result.customer_seg)
+        setCost_str(result.cost_str)
+        setRevenue(result.revenue)
+      }
+      return
+    }
+
+    getCanvasList(canvasData.firebase)
+  }, [canvasData, linkId])
+
+  const handleProblem = async (e) => {
     e.preventDefault()
     if (!data.problem) {
       return
     } else {
-      const newProblem = {
-        data: data.problem,
+      try {
+        const newProblem = {
+          data: data.problem,
+        }
+        setProblem([...problem, newProblem])
+        setData(initialState)
+        await updateDatabase(canvasNames[0], problem, newProblem)
+        // if (newDataId) {
+        //   await canvasData.firebase
+        //     .firestore()
+        //     .collection('Canvas')
+        //     .doc(newDataId)
+        //     .set({ ...initialState, problem: [...problem, newProblem] })
+        // }
+
+        // await canvasData.firebase
+        //   .firestore()
+        //   .collection('Canvas')
+        //   .doc(linkId)
+        //   .set({ ...initialState, problem: [...problem, newProblem] })
+      } catch (error) {
+        console.log(error)
       }
-      setProblem([...problem, newProblem])
-      setData(initialState)
     }
   }
 
-  const handleSolution = (e) => {
+  const handleSolution = async (e) => {
     e.preventDefault()
     if (!data.solution) {
       return
     } else {
-      const newSolution = {
-        data: data.solution,
+      try {
+        const newSolution = {
+          data: data.solution,
+        }
+        setSolution([...solution, newSolution])
+        setData(initialState)
+        await updateDatabase(canvasNames[1], solution, newSolution)
+      } catch (error) {
+        console.log(error)
       }
-      setSolution([...solution, newSolution])
-      setData(initialState)
     }
   }
 
-  const handleKeyMetrics = (e) => {
+  const handleKeyMetrics = async (e) => {
     e.preventDefault()
     if (!data.key_metrics) {
       return
     } else {
-      const newKeyMetrics = {
-        data: data.key_metrics,
+      try {
+        const newKeyMetrics = {
+          data: data.key_metrics,
+        }
+        setKey_metrics([...key_metrics, newKeyMetrics])
+        setData(initialState)
+        await updateDatabase(canvasNames[2], key_metrics, newKeyMetrics)
+      } catch (error) {
+        console.log(error)
       }
-      setKey_metrics([...key_metrics, newKeyMetrics])
-      setData(initialState)
     }
   }
 
-  const handleUniqueValue = (e) => {
+  const handleUniqueValue = async (e) => {
     e.preventDefault()
     if (!data.unique_value) {
       return
     } else {
-      const newUniqueValue = {
-        data: data.unique_value,
+      try {
+        const newUniqueValue = {
+          data: data.unique_value,
+        }
+        setUnique_value([...unique_value, newUniqueValue])
+        setData(initialState)
+        await updateDatabase(canvasNames[3], unique_value, newUniqueValue)
+      } catch (error) {
+        console.log(error)
       }
-      setUnique_value([...unique_value, newUniqueValue])
-      setData(initialState)
     }
   }
 
-  const handleUnfair = (e) => {
+  const handleUnfair = async (e) => {
     e.preventDefault()
     if (!data.unfair) {
       return
     } else {
-      const newUnfair = {
-        data: data.unfair,
+      try {
+        const newUnfair = {
+          data: data.unfair,
+        }
+        setUnfair([...unfair, newUnfair])
+        setData(initialState)
+        await updateDatabase(canvasNames[4], unfair, newUnfair)
+      } catch (error) {
+        console.log(error)
       }
-      setUnfair([...unfair, newUnfair])
-      setData(initialState)
     }
   }
 
-  const handleChannels = (e) => {
+  const handleChannels = async (e) => {
     e.preventDefault()
     if (!data.channels) {
       return
     } else {
-      const newChannels = {
-        data: data.channels,
+      try {
+        const newChannels = {
+          data: data.channels,
+        }
+        setChannels([...channels, newChannels])
+        setData(initialState)
+        await updateDatabase(canvasNames[5], channels, newChannels)
+      } catch (error) {
+        console.log(error)
       }
-      setChannels([...channels, newChannels])
-      setData(initialState)
     }
   }
 
-  const handleCustomerSeg = (e) => {
+  const handleCustomerSeg = async (e) => {
     e.preventDefault()
     if (!data.customer_seg) {
       return
     } else {
-      const newCustomerSeg = {
-        data: data.customer_seg,
+      try {
+        const newCustomerSeg = {
+          data: data.customer_seg,
+        }
+        setCustomer_seg([...customer_seg, newCustomerSeg])
+        setData(initialState)
+        await updateDatabase(canvasNames[6], customer_seg, newCustomerSeg)
+      } catch (error) {
+        console.log(error)
       }
-      setCustomer_seg([...customer_seg, newCustomerSeg])
-      setData(initialState)
     }
   }
 
-  const handleCostStr = (e) => {
+  const handleCostStr = async (e) => {
     e.preventDefault()
     if (!data.cost_str) {
       return
     } else {
-      const newCostStr = {
-        data: data.cost_str,
+      try {
+        const newCostStr = {
+          data: data.cost_str,
+        }
+        setCost_str([...cost_str, newCostStr])
+        setData(initialState)
+        await updateDatabase(canvasNames[7], cost_str, newCostStr)
+      } catch (error) {
+        console.log(error)
       }
-      setCost_str([...cost_str, newCostStr])
-      setData(initialState)
     }
   }
 
-  const handleRevenue = (e) => {
+  const handleRevenue = async (e) => {
     e.preventDefault()
     if (!data.revenue) {
       return
     } else {
-      const newRevenue = {
-        data: data.revenue,
+      try {
+        const newRevenue = {
+          data: data.revenue,
+        }
+        setRevenue([...revenue, newRevenue])
+        setData(initialState)
+        await updateDatabase(canvasNames[8], revenue, newRevenue)
+      } catch (error) {
+        console.log(error)
       }
-      setRevenue([...revenue, newRevenue])
-      setData(initialState)
     }
   }
 
