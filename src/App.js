@@ -125,7 +125,7 @@ const App = (props) => {
     }
 
     getCanvasList(canvasData.firebase)
-  }, [canvasData, linkId])
+  }, [canvasData])
 
   const handleProblem = async (e) => {
     e.preventDefault()
