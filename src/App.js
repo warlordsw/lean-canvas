@@ -27,13 +27,13 @@ const canvasNames = [
 ]
 
 let result = ''
-
+export let linkId = ''
 const App = (props) => {
   const { newDataId } = useCanvasState()
   // const [list, setList] = useState(initialState)
   // console.log(list.problem)
   //console.log(newDataId, 'newDataIdApp')
-  let linkId = props.location.pathname.substring(1)
+  linkId = props.location.pathname.substring(1)
   const canvasData = useContext(FirebaseContext)
 
   const [baseCanvas, setBaseCanvas] = useState(initialState)
