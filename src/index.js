@@ -1,12 +1,19 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import './index.css'
-import App from './App'
 import reportWebVitals from './reportWebVitals'
+import { firebase, FieldValue } from './lib/firebase'
+import FirebaseContext from './context/firebase'
+import Main from './Main'
+import { CanvasProvider } from './context/context'
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <FirebaseContext.Provider value={{ firebase, FieldValue }}>
+      <CanvasProvider>
+        <Main />
+      </CanvasProvider>
+    </FirebaseContext.Provider>
   </React.StrictMode>,
   document.getElementById('root')
 )
