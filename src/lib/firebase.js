@@ -1,9 +1,12 @@
 import Firebase from 'firebase/app'
 import 'firebase/firestore'
+//import 'firebase/database'
 
 const firebaseConfig = {
   apiKey: 'AIzaSyCz21o4TDzci1E0fZ2q9mAk_UXbS8tlr3Q',
   authDomain: 'lean-canvas-df440.firebaseapp.com',
+  databaseURL:
+    'https://lean-canvas-df440-default-rtdb.europe-west1.firebasedatabase.app',
   projectId: 'lean-canvas-df440',
   storageBucket: 'lean-canvas-df440.appspot.com',
   messagingSenderId: '1045475830974',
