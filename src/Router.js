@@ -4,28 +4,22 @@ import { useHistory } from 'react-router-dom'
 import { useCanvasState, useDispatch } from './context/context'
 import { newDataIdNumber } from './context/action'
 
-//export let newDataId
-
-const Router = () => {
+const Router = (props) => {
   const canvasData = useContext(FirebaseContext)
   const dispatch = useDispatch()
-  const { newDataId } = useCanvasState()
-  //console.log(useCanvasState())
+  const { newDataRealTimeId } = useCanvasState()
 
   const history = useHistory()
   useEffect(() => {
     const createDatabase = async () => {
       await newDataIdNumber(dispatch, canvasData.firebase)
-      //const newData = await firebase.firestore().collection('Canvas').doc()
-      //await newData.set({})
-      // newDataId = newData.id
-      history.push(`/${newDataId}`)
+      history.push(`/${newDataRealTimeId}`)
     }
 
     createDatabase()
-  }, [canvasData, history, dispatch, newDataId])
+  }, [canvasData, history, dispatch, newDataRealTimeId])
 
-  return <div>{newDataId}</div>
+  return <div>{newDataRealTimeId}</div>
 }
 
 export default Router
