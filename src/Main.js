@@ -1,4 +1,4 @@
-import { BrowserRouter, HashRouter, Route, Switch } from 'react-router-dom'
+import { BrowserRouter, Route, Switch } from 'react-router-dom'
 import App from './App'
 import { useCanvasState } from './context/context'
 import NotFound from './NotFound'
