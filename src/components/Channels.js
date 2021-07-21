@@ -56,12 +56,30 @@ const Channels = ({
       <div className=' bg-base-200 mx-2 h-full overflow-y-auto'>
         {channels.map((item, key) => {
           return (
-            <div key={key} className='bg-base-300 deldiv '>
+            <div key={key} className='bg-base-300 deldiv'>
               <div className='flex flex-grow'>{item.data}</div>
               <button
                 type='button'
                 onClick={() => delSpecificChannels(item.id)}
-                className='btn btn-outline btn-circle btn-xs'
+                className='btn btn-circle btn-outline btn-xs '
+              >
+                <svg
+                  id='i-edit'
+                  xmlns='http://www.w3.org/2000/svg'
+                  viewBox='0 0 32 32'
+                  fill='#ffffff'
+                  stroke='#000000'
+                  strokeLinecap='round'
+                  strokeLinejoin='round'
+                  strokeWidth='2'
+                >
+                  <path d='M30 7 L25 2 5 22 3 29 10 27 Z M21 6 L26 11 Z M5 22 L10 27 Z' />
+                </svg>
+              </button>
+              <button
+                type='button'
+                onClick={() => delSpecificChannels(item.id)}
+                className='btn btn-outline btn-circle btn-xs ml-1'
               >
                 <svg
                   xmlns='http://www.w3.org/2000/svg'
