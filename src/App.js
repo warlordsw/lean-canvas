@@ -13,15 +13,15 @@ import { useCanvasState } from './context/context'
 import FirebaseContext from './context/firebase'
 
 const initialState = {
-  problem: [],
-  solution: [],
-  key_metrics: [],
-  unique_value: [],
-  unfair: [],
-  channels: [],
-  customer_seg: [],
-  cost_str: [],
-  revenue: [],
+  problem: '',
+  solution: '',
+  key_metrics: '',
+  unique_value: '',
+  unfair: '',
+  channels: '',
+  customer_seg: '',
+  cost_str: '',
+  revenue: '',
 }
 const initialStateString = {
   problem: '[]',
