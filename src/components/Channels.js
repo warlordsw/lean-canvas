@@ -11,13 +11,10 @@ const Channels = ({
   linkId,
   baseCanvas,
   setBaseCanvas,
+  isEditing,
+  setIsEditing,
 }) => {
-  const [isEditing, setIsEditing] = useState({
-    editing: false,
-    editButtonActive: false,
-  })
   const [inputData, setInputData] = useState('')
-
   const canvasData = useContext(FirebaseContext)
 
   const handleChannels = async (e) => {
@@ -56,12 +53,33 @@ const Channels = ({
   }
 
   const editChannelsButton = (id) => {
-    setIsEditing({ editing: true, editButtonActive: true })
     const specificChannel = channels.find((prop) => prop.id === id)
+    setIsEditing({ editId: id, editing: true, editButtonActive: true })
     setInputData(specificChannel.data)
   }
 
-  const channelsEditFinished = async () => {
+  const channelsEditFinished = async (id) => {
+    const specificChannel = channels.find((prop) => prop.id === id)
+    setChannels(
+      channels.map((item) => {
+        if (item.id === specificChannel.id) {
+          return { ...item, data: inputData }
+        } else {
+          return item
+        }
+      })
+    )
+    const findData = await canvasData.firebase.database().ref(linkId)
+    await findData.update({
+      ...baseCanvas,
+      channels: channels.map((item) => {
+        if (item.id === specificChannel.id) {
+          return { ...item, data: inputData }
+        } else {
+          return item
+        }
+      }),
+    })
     setIsEditing({ editing: false, editButtonActive: false })
   }
 
@@ -72,11 +90,11 @@ const Channels = ({
         {channels.map((item, key) => {
           return (
             <div key={key} className='bg-base-300 deldiv'>
-              {isEditing.editing ? (
+              {isEditing.editing && isEditing.editId === item.id ? (
                 <form
                   onSubmit={(e) => {
                     e.preventDefault()
-                    channelsEditFinished()
+                    channelsEditFinished(item.id)
                   }}
                 >
                   <input
@@ -89,7 +107,7 @@ const Channels = ({
               ) : (
                 <div className='flex flex-grow'>{item.data}</div>
               )}
-              {isEditing.editButtonActive ? (
+              {isEditing.editButtonActive && isEditing.editId === item.id ? (
                 <button
                   type='button'
                   onClick={() => delSpecificChannels(item.id)}
@@ -110,7 +128,7 @@ const Channels = ({
                   </svg>
                 </button>
               ) : (
-                <div className='flex items-center'>
+                <div className='flex items-center justify-center'>
                   <button
                     type='button'
                     onClick={() => editChannelsButton(item.id)}
