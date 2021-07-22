@@ -67,6 +67,11 @@ const App = (props) => {
   const [cost_str, setCost_str] = useState([])
   const [revenue, setRevenue] = useState([])
   const [loading, setLoading] = useState(false)
+  const [isEditing, setIsEditing] = useState({
+    editId: '',
+    editing: false,
+    editButtonActive: false,
+  })
 
   const updateDatabase = async (varA, varB, newCanvasProperty) => {
     if (newDataRealTimeId) {
@@ -221,6 +226,8 @@ const App = (props) => {
               linkId={linkId}
               baseCanvas={baseCanvas}
               setBaseCanvas={setBaseCanvas}
+              isEditing={isEditing}
+              setIsEditing={setIsEditing}
             />
             <div className='flex flex-col w-64'>
               <Solution
@@ -234,6 +241,8 @@ const App = (props) => {
                 baseCanvas={baseCanvas}
                 setBaseCanvas={setBaseCanvas}
                 linkId={linkId}
+                isEditing={isEditing}
+                setIsEditing={setIsEditing}
               />
               <KeyMetrics
                 key_metrics={key_metrics}
@@ -246,6 +255,8 @@ const App = (props) => {
                 linkId={linkId}
                 baseCanvas={baseCanvas}
                 setBaseCanvas={setBaseCanvas}
+                isEditing={isEditing}
+                setIsEditing={setIsEditing}
               />
             </div>
             <UniqueValue
@@ -259,6 +270,8 @@ const App = (props) => {
               baseCanvas={baseCanvas}
               setBaseCanvas={setBaseCanvas}
               linkId={linkId}
+              isEditing={isEditing}
+              setIsEditing={setIsEditing}
             />
             <div className='flex flex-col w-64 '>
               <Unfair
@@ -272,6 +285,8 @@ const App = (props) => {
                 baseCanvas={baseCanvas}
                 setBaseCanvas={setBaseCanvas}
                 linkId={linkId}
+                isEditing={isEditing}
+                setIsEditing={setIsEditing}
               />
               <Channels
                 data={data}
@@ -284,6 +299,8 @@ const App = (props) => {
                 baseCanvas={baseCanvas}
                 setBaseCanvas={setBaseCanvas}
                 linkId={linkId}
+                isEditing={isEditing}
+                setIsEditing={setIsEditing}
               />
             </div>
             <CustomerSeg
@@ -297,6 +314,8 @@ const App = (props) => {
               baseCanvas={baseCanvas}
               setBaseCanvas={setBaseCanvas}
               linkId={linkId}
+              isEditing={isEditing}
+              setIsEditing={setIsEditing}
             />
           </div>
           {/* Alt Sekme Geçiş */}
@@ -312,6 +331,8 @@ const App = (props) => {
               baseCanvas={baseCanvas}
               setBaseCanvas={setBaseCanvas}
               linkId={linkId}
+              isEditing={isEditing}
+              setIsEditing={setIsEditing}
             />
             <Revenue
               data={data}
@@ -324,6 +345,8 @@ const App = (props) => {
               baseCanvas={baseCanvas}
               setBaseCanvas={setBaseCanvas}
               linkId={linkId}
+              isEditing={isEditing}
+              setIsEditing={setIsEditing}
             />
           </div>
         </div>
