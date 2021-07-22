@@ -61,27 +61,31 @@ const Solution = ({
 
   const solutionEditFinished = async (id) => {
     const specificSolution = solution.find((prop) => prop.id === id)
-    setSolution(
-      solution.map((item) => {
-        if (item.id === specificSolution.id) {
-          return { ...item, data: inputData }
-        } else {
-          return item
-        }
+    if (!inputData) {
+      return
+    } else {
+      setSolution(
+        solution.map((item) => {
+          if (item.id === specificSolution.id) {
+            return { ...item, data: inputData }
+          } else {
+            return item
+          }
+        })
+      )
+      const findData = await canvasData.firebase.database().ref(linkId)
+      await findData.update({
+        ...baseCanvas,
+        solution: solution.map((item) => {
+          if (item.id === specificSolution.id) {
+            return { ...item, data: inputData }
+          } else {
+            return item
+          }
+        }),
       })
-    )
-    const findData = await canvasData.firebase.database().ref(linkId)
-    await findData.update({
-      ...baseCanvas,
-      solution: solution.map((item) => {
-        if (item.id === specificSolution.id) {
-          return { ...item, data: inputData }
-        } else {
-          return item
-        }
-      }),
-    })
-    setIsEditing({ editing: false, editButtonActive: false })
+      setIsEditing({ editing: false, editButtonActive: false })
+    }
   }
 
   return (

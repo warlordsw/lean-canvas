@@ -54,34 +54,38 @@ const CostStr = ({
   }
 
   const editCostStrButton = (id) => {
-    const delSpecificCostStr = cost_str.find((prop) => prop.id === id)
+    const specificCostStr = cost_str.find((prop) => prop.id === id)
     setIsEditing({ editId: id, editing: true, editButtonActive: true })
-    setInputData(delSpecificCostStr.data)
+    setInputData(specificCostStr.data)
   }
 
   const costStrEditFinished = async (id) => {
     const specificCostStr = cost_str.find((prop) => prop.id === id)
-    setCost_str(
-      cost_str.map((item) => {
-        if (item.id === specificCostStr.id) {
-          return { ...item, data: inputData }
-        } else {
-          return item
-        }
+    if (!inputData) {
+      return
+    } else {
+      setCost_str(
+        cost_str.map((item) => {
+          if (item.id === specificCostStr.id) {
+            return { ...item, data: inputData }
+          } else {
+            return item
+          }
+        })
+      )
+      const findData = await canvasData.firebase.database().ref(linkId)
+      await findData.update({
+        ...baseCanvas,
+        cost_str: cost_str.map((item) => {
+          if (item.id === specificCostStr.id) {
+            return { ...item, data: inputData }
+          } else {
+            return item
+          }
+        }),
       })
-    )
-    const findData = await canvasData.firebase.database().ref(linkId)
-    await findData.update({
-      ...baseCanvas,
-      cost_str: cost_str.map((item) => {
-        if (item.id === specificCostStr.id) {
-          return { ...item, data: inputData }
-        } else {
-          return item
-        }
-      }),
-    })
-    setIsEditing({ editing: false, editButtonActive: false })
+      setIsEditing({ editing: false, editButtonActive: false })
+    }
   }
 
   return (

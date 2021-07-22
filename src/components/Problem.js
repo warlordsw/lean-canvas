@@ -64,27 +64,31 @@ const Problem = ({
 
   const problemsEditFinished = async (id) => {
     const specificProblem = problem.find((prop) => prop.id === id)
-    setProblem(
-      problem.map((item) => {
-        if (item.id === specificProblem.id) {
-          return { ...item, data: inputData }
-        } else {
-          return item
-        }
+    if (!inputData) {
+      return
+    } else {
+      setProblem(
+        problem.map((item) => {
+          if (item.id === specificProblem.id) {
+            return { ...item, data: inputData }
+          } else {
+            return item
+          }
+        })
+      )
+      const findData = await canvasData.firebase.database().ref(linkId)
+      await findData.update({
+        ...baseCanvas,
+        problem: problem.map((item) => {
+          if (item.id === specificProblem.id) {
+            return { ...item, data: inputData }
+          } else {
+            return item
+          }
+        }),
       })
-    )
-    const findData = await canvasData.firebase.database().ref(linkId)
-    await findData.update({
-      ...baseCanvas,
-      problem: problem.map((item) => {
-        if (item.id === specificProblem.id) {
-          return { ...item, data: inputData }
-        } else {
-          return item
-        }
-      }),
-    })
-    setIsEditing({ editing: false, editButtonActive: false })
+      setIsEditing({ editing: false, editButtonActive: false })
+    }
   }
 
   return (

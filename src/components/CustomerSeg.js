@@ -60,27 +60,31 @@ const CustomerSeg = ({
 
   const customerSegEditFinished = async (id) => {
     const specificCustomerSeg = customer_seg.find((prop) => prop.id === id)
-    setCustomer_seg(
-      customer_seg.map((item) => {
-        if (item.id === specificCustomerSeg.id) {
-          return { ...item, data: inputData }
-        } else {
-          return item
-        }
+    if (!inputData) {
+      return
+    } else {
+      setCustomer_seg(
+        customer_seg.map((item) => {
+          if (item.id === specificCustomerSeg.id) {
+            return { ...item, data: inputData }
+          } else {
+            return item
+          }
+        })
+      )
+      const findData = await canvasData.firebase.database().ref(linkId)
+      await findData.update({
+        ...baseCanvas,
+        customer_seg: customer_seg.map((item) => {
+          if (item.id === specificCustomerSeg.id) {
+            return { ...item, data: inputData }
+          } else {
+            return item
+          }
+        }),
       })
-    )
-    const findData = await canvasData.firebase.database().ref(linkId)
-    await findData.update({
-      ...baseCanvas,
-      customer_seg: customer_seg.map((item) => {
-        if (item.id === specificCustomerSeg.id) {
-          return { ...item, data: inputData }
-        } else {
-          return item
-        }
-      }),
-    })
-    setIsEditing({ editing: false, editButtonActive: false })
+      setIsEditing({ editing: false, editButtonActive: false })
+    }
   }
 
   return (

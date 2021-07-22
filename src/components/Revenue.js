@@ -60,27 +60,31 @@ const Revenue = ({
 
   const revenueEditFinished = async (id) => {
     const specificRevenue = revenue.find((prop) => prop.id === id)
-    setRevenue(
-      revenue.map((item) => {
-        if (item.id === specificRevenue.id) {
-          return { ...item, data: inputData }
-        } else {
-          return item
-        }
+    if (!inputData) {
+      return
+    } else {
+      setRevenue(
+        revenue.map((item) => {
+          if (item.id === specificRevenue.id) {
+            return { ...item, data: inputData }
+          } else {
+            return item
+          }
+        })
+      )
+      const findData = await canvasData.firebase.database().ref(linkId)
+      await findData.update({
+        ...baseCanvas,
+        revenue: revenue.map((item) => {
+          if (item.id === specificRevenue.id) {
+            return { ...item, data: inputData }
+          } else {
+            return item
+          }
+        }),
       })
-    )
-    const findData = await canvasData.firebase.database().ref(linkId)
-    await findData.update({
-      ...baseCanvas,
-      revenue: revenue.map((item) => {
-        if (item.id === specificRevenue.id) {
-          return { ...item, data: inputData }
-        } else {
-          return item
-        }
-      }),
-    })
-    setIsEditing({ editing: false, editButtonActive: false })
+      setIsEditing({ editing: false, editButtonActive: false })
+    }
   }
 
   return (

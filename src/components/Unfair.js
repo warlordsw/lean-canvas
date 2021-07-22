@@ -61,27 +61,31 @@ const Unfair = ({
 
   const unfairEditFinished = async (id) => {
     const specificUnfair = unfair.find((prop) => prop.id === id)
-    setUnfair(
-      unfair.map((item) => {
-        if (item.id === specificUnfair.id) {
-          return { ...item, data: inputData }
-        } else {
-          return item
-        }
+    if (!inputData) {
+      return
+    } else {
+      setUnfair(
+        unfair.map((item) => {
+          if (item.id === specificUnfair.id) {
+            return { ...item, data: inputData }
+          } else {
+            return item
+          }
+        })
+      )
+      const findData = await canvasData.firebase.database().ref(linkId)
+      await findData.update({
+        ...baseCanvas,
+        unfair: unfair.map((item) => {
+          if (item.id === specificUnfair.id) {
+            return { ...item, data: inputData }
+          } else {
+            return item
+          }
+        }),
       })
-    )
-    const findData = await canvasData.firebase.database().ref(linkId)
-    await findData.update({
-      ...baseCanvas,
-      unfair: unfair.map((item) => {
-        if (item.id === specificUnfair.id) {
-          return { ...item, data: inputData }
-        } else {
-          return item
-        }
-      }),
-    })
-    setIsEditing({ editing: false, editButtonActive: false })
+      setIsEditing({ editing: false, editButtonActive: false })
+    }
   }
 
   return (

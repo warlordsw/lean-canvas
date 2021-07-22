@@ -60,27 +60,31 @@ const Channels = ({
 
   const channelsEditFinished = async (id) => {
     const specificChannel = channels.find((prop) => prop.id === id)
-    setChannels(
-      channels.map((item) => {
-        if (item.id === specificChannel.id) {
-          return { ...item, data: inputData }
-        } else {
-          return item
-        }
+    if (!inputData) {
+      return
+    } else {
+      setChannels(
+        channels.map((item) => {
+          if (item.id === specificChannel.id) {
+            return { ...item, data: inputData }
+          } else {
+            return item
+          }
+        })
+      )
+      const findData = await canvasData.firebase.database().ref(linkId)
+      await findData.update({
+        ...baseCanvas,
+        channels: channels.map((item) => {
+          if (item.id === specificChannel.id) {
+            return { ...item, data: inputData }
+          } else {
+            return item
+          }
+        }),
       })
-    )
-    const findData = await canvasData.firebase.database().ref(linkId)
-    await findData.update({
-      ...baseCanvas,
-      channels: channels.map((item) => {
-        if (item.id === specificChannel.id) {
-          return { ...item, data: inputData }
-        } else {
-          return item
-        }
-      }),
-    })
-    setIsEditing({ editing: false, editButtonActive: false })
+      setIsEditing({ editing: false, editButtonActive: false })
+    }
   }
 
   return (

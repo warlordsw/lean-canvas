@@ -60,27 +60,31 @@ const KeyMetrics = ({
 
   const keyMetricsEditFinished = async (id) => {
     const specificKeyMetrics = key_metrics.find((prop) => prop.id === id)
-    setKey_metrics(
-      key_metrics.map((item) => {
-        if (item.id === specificKeyMetrics.id) {
-          return { ...item, data: inputData }
-        } else {
-          return item
-        }
+    if (!inputData) {
+      return
+    } else {
+      setKey_metrics(
+        key_metrics.map((item) => {
+          if (item.id === specificKeyMetrics.id) {
+            return { ...item, data: inputData }
+          } else {
+            return item
+          }
+        })
+      )
+      const findData = await canvasData.firebase.database().ref(linkId)
+      await findData.update({
+        ...baseCanvas,
+        key_metrics: key_metrics.map((item) => {
+          if (item.id === specificKeyMetrics.id) {
+            return { ...item, data: inputData }
+          } else {
+            return item
+          }
+        }),
       })
-    )
-    const findData = await canvasData.firebase.database().ref(linkId)
-    await findData.update({
-      ...baseCanvas,
-      key_metrics: key_metrics.map((item) => {
-        if (item.id === specificKeyMetrics.id) {
-          return { ...item, data: inputData }
-        } else {
-          return item
-        }
-      }),
-    })
-    setIsEditing({ editing: false, editButtonActive: false })
+      setIsEditing({ editing: false, editButtonActive: false })
+    }
   }
 
   return (

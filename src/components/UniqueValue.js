@@ -60,27 +60,31 @@ const UniqueValue = ({
 
   const uniqueValEditFinished = async (id) => {
     const specificUniqueVal = unique_value.find((prop) => prop.id === id)
-    setUnique_value(
-      unique_value.map((item) => {
-        if (item.id === specificUniqueVal.id) {
-          return { ...item, data: inputData }
-        } else {
-          return item
-        }
+    if (!inputData) {
+      return
+    } else {
+      setUnique_value(
+        unique_value.map((item) => {
+          if (item.id === specificUniqueVal.id) {
+            return { ...item, data: inputData }
+          } else {
+            return item
+          }
+        })
+      )
+      const findData = await canvasData.firebase.database().ref(linkId)
+      await findData.update({
+        ...baseCanvas,
+        unique_value: unique_value.map((item) => {
+          if (item.id === specificUniqueVal.id) {
+            return { ...item, data: inputData }
+          } else {
+            return item
+          }
+        }),
       })
-    )
-    const findData = await canvasData.firebase.database().ref(linkId)
-    await findData.update({
-      ...baseCanvas,
-      unique_value: unique_value.map((item) => {
-        if (item.id === specificUniqueVal.id) {
-          return { ...item, data: inputData }
-        } else {
-          return item
-        }
-      }),
-    })
-    setIsEditing({ editing: false, editButtonActive: false })
+      setIsEditing({ editing: false, editButtonActive: false })
+    }
   }
 
   return (
