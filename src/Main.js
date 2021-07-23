@@ -5,7 +5,6 @@ import NotFound from './NotFound'
 import Router from './Router'
 const Main = () => {
   const { newDataRealTimeId } = useCanvasState()
-  console.log(newDataRealTimeId, 'Main')
   return (
     <BrowserRouter>
       <Switch>
