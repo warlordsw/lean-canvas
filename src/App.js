@@ -67,11 +67,7 @@ const App = (props) => {
   const [cost_str, setCost_str] = useState([])
   const [revenue, setRevenue] = useState([])
   const [loading, setLoading] = useState(false)
-  const [isEditing, setIsEditing] = useState({
-    editId: '',
-    editing: false,
-    editButtonActive: false,
-  })
+  const [isEditing, setIsEditing] = useState('')
 
   const updateDatabase = async (varA, varB, newCanvasProperty) => {
     if (newDataRealTimeId) {
